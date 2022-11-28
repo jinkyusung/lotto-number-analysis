@@ -31,7 +31,7 @@ def get_every_lotto(url):   #모든 로또회차 구하기 (연도 리스트, �
 
     years = []
     lotto_nums = []
-    for i in range(10): #여기에 10 대신 원하는 횟수만큼 대입해서 값 가져오기
+    for i in range(10):
         temp_year, temp_lotto_num = get_number(driver, url)
         years.append(temp_year)
         lotto_nums.append(temp_lotto_num)
@@ -39,5 +39,6 @@ def get_every_lotto(url):   #모든 로또회차 구하기 (연도 리스트, �
     return years, lotto_nums
 
 
-url = "https://dhlottery.co.kr/common.do?method=main"
-print(get_every_lotto(url))
+if __name__ == '__main__':
+    url = "https://dhlottery.co.kr/common.do?method=main"
+    print(get_every_lotto(url))
