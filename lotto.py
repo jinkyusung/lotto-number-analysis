@@ -31,7 +31,7 @@ def get_every_lotto(url):   #모든 로또회차 구하기 (연도 리스트, �
 
     years = []
     lotto_nums = []
-    for i in range(10):
+    for i in range(times):
         temp_year, temp_lotto_num = get_number(driver, url)
         years.append(temp_year)
         lotto_nums.append(temp_lotto_num)
