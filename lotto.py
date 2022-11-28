@@ -67,7 +67,7 @@ def get_every_lotto(url):   #모든 로또회차 구하기 (연도 리스트, �
 
     years = []
     lotto_nums = []
-    for i in range(100): #여기에 원하는 횟수만큼 대입해서 값 가져오기
+    for i in range(times): #여기에 원하는 횟수만큼 대입해서 값 가져오기
         temp_year, temp_lotto_num = get_number(driver, url)
         if temp_year == 0 or temp_lotto_num == 0:   #원하는 연도보다 이후 것
             prev_button.click()
@@ -85,24 +85,24 @@ def check_input_year(my_year):
         print("Incorrect data format({0}), should be YY-MM-DD".format(my_year))
         return False
 
-
-url = "https://dhlottery.co.kr/common.do?method=main"
-while 1:
-    my_choice = input("<select>\n1. until yy-mm-dd\n2. until now \nselect : ")
-    if my_choice == '1':
-        my_year = input()
-        if check_input_year(my_year):
-            #print(type(my_year))   #string
+if __name__ == '__main__':
+    url = "https://dhlottery.co.kr/common.do?method=main"
+    while 1:
+        my_choice = input("<select>\n1. until yy-mm-dd\n2. until now \nselect : ")
+        if my_choice == '1':
+            my_year = input()
+            if check_input_year(my_year):
+                #print(type(my_year))   #string
+                #print(my_year)
+                break
+        elif my_choice == '2':
+            today_date = str(datetime.datetime.today())
+            my_year = today_date[2:10]
             #print(my_year)
             break
-    elif my_choice == '2':
-        today_date = str(datetime.datetime.today())
-        my_year = today_date[2:10]
-        #print(my_year)
-        break
-    else:
-        print('choose 1 or 2\n')
+        else:
+            print('choose 1 or 2\n')
 
-INPUT_YEAR_MODE = 1   #입력한 날짜까지만 나오도록
-check = get_every_lotto(url)
-print(check)
+    INPUT_YEAR_MODE = 1   #입력한 날짜까지만 나오도록
+    check = get_every_lotto(url)
+    print(check)
