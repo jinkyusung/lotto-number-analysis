@@ -12,7 +12,9 @@ def get_number(driver, url):   #마지막 번호가 보너스 번호
 
     lotto_year = driver.find_element(By.ID, 'drwNoDate').text
     if lotto_year[0] == '[':
-        lotto_year = lotto_year[1:-1]
+        lotto_year = lotto_year[3:-1]
+    else:
+        lotto_year = lotto_year[2:]
     return lotto_year, result_number
 
 def get_every_lotto(url):   #모든 로또회차 구하기 (연도 리스트, 번호 리스트)
