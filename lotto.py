@@ -11,6 +11,8 @@ def get_number(driver, url):   #마지막 번호가 보너스 번호
     result_number.append(int(text_bonus_number))
 
     lotto_year = driver.find_element(By.ID, 'drwNoDate').text
+    if lotto_year[0] == '[':
+        lotto_year = lotto_year[1:-1]
     return lotto_year, result_number
 
 def get_every_lotto(url):   #모든 로또회차 구하기 (연도 리스트, 번호 리스트)
@@ -31,7 +33,7 @@ def get_every_lotto(url):   #모든 로또회차 구하기 (연도 리스트, �
 
     years = []
     lotto_nums = []
-    for i in range(10): #여기에 10 대신 원하는 횟수만큼 대입해서 값 가져오기
+    for i in range(5): #여기에 원하는 횟수만큼 대입해서 값 가져오기
         temp_year, temp_lotto_num = get_number(driver, url)
         years.append(temp_year)
         lotto_nums.append(temp_lotto_num)
