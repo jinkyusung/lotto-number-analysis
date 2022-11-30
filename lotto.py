@@ -28,17 +28,17 @@ def compare_date(date1, date2):
         print("Incorrect data format({0}), should be YY-MM-DD".format(my_year))
         return False
 
-def get_number(driver, url):   #마지막 번호가 보너스 번호
-
+def get_number(driver, my_year, stop_checking_date):   #마지막 번호가 보너스 번호
+    INPUT_YEAR_MODE = 1   #입력한 날짜까지만 나오도록
     lotto_year = driver.find_element(By.ID, 'drwNoDate').text
     if lotto_year[0] == '[':
         lotto_year = lotto_year[3:-1]
     else:
         lotto_year = lotto_year[2:]
     if INPUT_YEAR_MODE:
-        if compare_date(my_year, lotto_year):  #my_year 가 더 작으면 작동하지 않는다
-            return 0, 0
-
+        if stop_checking_date or compare_date(my_year, lotto_year):  #my_year 가 더 작으면 작동하지 않는다
+            return 0, 0, 0
+    stop_checking_date = 1
     result_number=[]
     for i in range(1, 7):
         text_number = driver.find_element(By.ID, 'drwtNo'+str(i)).text
@@ -47,9 +47,9 @@ def get_number(driver, url):   #마지막 번호가 보너스 번호
     result_number.append(int(text_bonus_number))
 
 
-    return lotto_year, result_number
+    return lotto_year, result_number, stop_checking_date
 
-def get_every_lotto(url):   #모든 로또회차 구하기 (연도 리스트, 번호 리스트)
+def get_every_lotto(url, my_year):   #모든 로또회차 구하기 (연도 리스트, 번호 리스트)
     driver = webdriver.Chrome('chromedriver')
     driver.get(url)
     tabs = driver.window_handles
@@ -67,10 +67,10 @@ def get_every_lotto(url):   #모든 로또회차 구하기 (연도 리스트, �
 
     years = []
     lotto_nums = []
-
+    stop_checking_date = 0
     for i in range(times): #여기에 원하는 횟수만큼 대입해서 값 가져오기
 
-        temp_year, temp_lotto_num = get_number(driver, url)
+        temp_year, temp_lotto_num, stop_checking_date = get_number(driver, my_year, stop_checking_date)
         if temp_year == 0 or temp_lotto_num == 0:   #원하는 연도보다 이후 것
             prev_button.click()
             continue
@@ -82,6 +82,12 @@ def get_every_lotto(url):   #모든 로또회차 구하기 (연도 리스트, �
 def check_input_year(my_year):
     try:
         datetime.datetime.strptime(my_year, "%y-%m-%d")
+        if compare_date(my_year, '02-12-07'):
+            print('로또 1회차의 날짜는 02-12-07입니다.\n')
+            return False
+        elif compare_date(str(datetime.datetime.today())[2:10], my_year):
+            print('오늘 날짜 까지만 입력해주세요\n')
+            return False
         return True
     except ValueError:
         print("Incorrect data format({0}), should be YY-MM-DD".format(my_year))
