@@ -69,7 +69,6 @@ def get_every_lotto(url):   #모든 로또회차 구하기 (연도 리스트, �
     lotto_nums = []
 
     for i in range(times): #여기에 원하는 횟수만큼 대입해서 값 가져오기
-
         temp_year, temp_lotto_num = get_number(driver, url)
         if temp_year == 0 or temp_lotto_num == 0:   #원하는 연도보다 이후 것
             prev_button.click()
